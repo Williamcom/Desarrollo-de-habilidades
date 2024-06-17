@@ -1,26 +1,24 @@
-import "./App.css"
-import Cabecera from './assets/Cabecera'
-import { Splitter, SplitterPanel } from 'primereact/splitter';
+import { BrowserRouter as Router } from "react-router-dom";
+import "./App.css";
+import NavBar from "./Navbar";
+import Loader from "./components/statics/Loader";
 
-export default function App(){
+/* Importamos los componentes */
+import { Suspense } from "react";
+import { AppRouter } from "./Router";
 
-  return (
-    <body>
-      <Cabecera />
-      <Splitter style={{ height: '300px' }}>
-          <SplitterPanel className="flex align-items-center justify-content-center">
-            <h3>
-            Ese vato que lastima la vista
-            </h3>
-            <h3>
-            Ese vato que lastima la vista
-            </h3>
-          </SplitterPanel>
-          <SplitterPanel className="flex align-items-center justify-content-center">
-            panel 2
-          </SplitterPanel>
-      </Splitter>
 
-    </body>
-  );
+export default function App() {
+    return (
+        <div className="App">
+            <NavBar />
+            <div className="content">
+                <Router>
+                  <Suspense fallback={<Loader/>}>
+                    <AppRouter/>
+                  </Suspense>
+                </Router>
+            </div>
+        </div>
+    );
 }

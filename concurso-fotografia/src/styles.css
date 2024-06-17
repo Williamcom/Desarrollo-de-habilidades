@@ -1,0 +1,45 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para el Menubar */
+.custom-menubar-container {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #007bff; /* Color de fondo del Menubar */
+}
+
+.custom-menubar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.p-menubar-end {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espacio entre íconos */
+}
+
+.p-menubar-end .p-menuitem {
+    padding: 0 1rem; /* Espacio alrededor de cada ícono */
+    font-size: 1.2rem; /* Tamaño de fuente para los íconos */
+    color: #ffffff; /* Color de los íconos */
+}
+
+.navbar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* Color del texto del Menubar */
+}
+
+.content {
+    margin-top: 60px; /* Margen para evitar que el contenido quede oculto bajo el Menubar */
+}
