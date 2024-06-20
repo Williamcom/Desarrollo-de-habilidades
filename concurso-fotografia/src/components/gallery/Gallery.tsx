@@ -1,52 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Galleria } from 'primereact/galleria';
-import PhotoService from './placeholder/photoexamples';
+import React, { useState, useEffect } from "react";
+import { Galleria } from "primereact/galleria";
+import { storage } from "../../firebase/config";
+import { Button } from "primereact/button";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 
 const Galeria: React.FC = () => {
-    
-    const [images, setImages] = useState(null);
-    const responsiveOptions = [
-        {
-            breakpoint: '991px',
-            numVisible: 4
-        },
-        {
-            breakpoint: '767px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '575px',
-            numVisible: 1
-        }
-    ];
+  const [images, setImages] = useState(null);
 
-    useEffect(() => {
-        PhotoService.getImages().then(data => setImages(data));
-    }, [])
+  const getImages = () => {
+    let imagesUrls = [];
+    const listRef = ref(storage, "");
+    // Find all the prefixes and items.
+    listAll(listRef)
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          getDownloadURL(itemRef)
+            .then((url) => {
+              console.log(url);
+              imagesUrls.push(url);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        });
+      })
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        console.log(error);
+      });
+    setImages(imagesUrls);
+  };
 
-    const itemTemplate = (item) => {
-        return <img src={item.itemImageSrc} alt={item.alt} style={{ width: '100%' }} />
-    }
+  const see = () => {
+    console.log(images);
+  };
 
-    const thumbnailTemplate = (item) => {
-        return <img src={item.thumbnailImageSrc} alt={item.alt} />
-    }
-
-    const caption = (item) => {
-        return (
-            <React.Fragment>
-                <div className="text-xl mb-2 font-bold">{item.title}</div>
-                <p className="text-white">{item.alt}</p>
-            </React.Fragment>
-        );
-    }
-
-    return (
-        <div className="card">
-            <Galleria value={images} responsiveOptions={responsiveOptions} numVisible={5} style={{ maxWidth: '640px' }} 
-                item={itemTemplate} thumbnail={thumbnailTemplate} thumbnailsPosition = 'right' caption={caption}/>
-        </div>
-    );
+  return (
+    <div className="card">
+      <Button onClick={getImages}>Imagenes</Button>
+      <Button onClick={see}>Ver imagenes</Button>
+    </div>
+  );
 };
 
 export default Galeria;

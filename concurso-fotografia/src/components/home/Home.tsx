@@ -29,6 +29,7 @@ const HomePage = () => {
                         <li>Las fotos deben ser originales y no haber sido premiadas en otros concursos.</li>
                         <li>La fecha límite para enviar las fotos es el 21 de Junio de 2024.</li>
                     </ul>
+                
                 </Card>
             </div>
         </div>

@@ -1,38 +1,39 @@
-import React from 'react';
-import 'primereact/resources/themes/saga-blue/theme.css'; // Importa el tema de PrimeReact que prefieras
-import 'primereact/resources/primereact.min.css'; // Importa los estilos de PrimeReact
-import 'primeicons/primeicons.css'; // Importa los íconos de PrimeIcons
-import './styles.css'; // Importa tus estilos personalizados
+import React from "react";
 
-import { Menubar } from 'primereact/menubar';
+import { Menubar } from "primereact/menubar";
+import { useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
-    const items = [
-        {
-            label: 'Inicio',
-            icon: 'pi pi-fw pi-home',
-            command: () => { window.location.href = "/" }
-        },
-        {
-            label: 'Galería',
-            icon: 'pi pi-fw pi-images',
-            command: () => { window.location.href = "galeria" }
-        },
-        {
-            label: 'Contacto',
-            icon: 'pi pi-fw pi-envelope',
-            command: () => { window.location.href = "contacto" }
-        }
-    ];
+  const navigate = useNavigate();
+  const items = [
+    {
+      label: "Inicio",
+      icon: "pi pi-fw pi-home",
+      command: () => {
+        navigate("/");
+      },
+    },
+    {
+      label: "Galería",
+      icon: "pi pi-fw pi-images",
+      command: () => {
+        navigate("/galeria");
+      },
+    },
+    {
+      label: "Contacto",
+      icon: "pi pi-fw pi-envelope",
+      command: () => {
+        navigate("/contacto");
+      },
+    },
+  ];
 
-
-    return (
-        <div className="custom-menubar-container">
-            <Menubar model={items} className="custom-menubar">
-                
-            </Menubar>
-        </div>
-    );
+  return (
+    <div>
+      <Menubar model={items}></Menubar>
+    </div>
+  );
 };
 
 export default NavBar;
