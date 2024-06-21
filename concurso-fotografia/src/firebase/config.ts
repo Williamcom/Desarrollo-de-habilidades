@@ -1,28 +1,12 @@
 // Impotarmos las funciones para usar el SDK de firebase
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
+
+import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
 // La configuracion de firebase
 
-dotenv.config();
-console.log(process.env);
-
-const firebaseConfig = {
-  apiKey: process.env.APIKEY,
-
-  authDomain: process.env.AUTHDOMAIN,
-
-  projectId: process.env.PROJECTID,
-
-  storageBucket: process.env.STORAGEBUCKET,
-
-  messagingSenderId: process.env.MESSAGINGSENDERID,
-
-  appId: process.env.APPID,
-};
+const firebaseConfig = {};
 
 // Initialize Firebase
 
@@ -34,30 +18,27 @@ export const storage = getStorage(app);
 export const uploadFile = async (file: File) => {
   const storageRef = ref(storage, uuidv4());
   await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 };
 
-// Para base de datros
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app, "concurso");
 
-const db = getFirestore(app);
-
-export const uploadInfo = async () => {
-  console.log("Entra a funcion");
-
+export const uploadInfo = async (data: Object) => {
   try {
-    console.log("Entra a try");
-
-    const docRef = await addDoc(collection(db, "fotos"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-    console.log("Document written with ID: ", docRef);
+    const docRef = await addDoc(collection(db, "fotos"), data);
+    return docRef;
   } catch (e) {
     console.error("Error adding document: ", e);
   }
 };
 
-export const getDocs = async () => {
-  //const querySnapshot = await getDocs(collection(db, "fotos"));
-  console.log(db);
+export const getData = async () => {
+  const querySnapshot = await getDocs(collection(db, "fotos"));
+  let allData: Array<Object> = [];
+  querySnapshot.forEach((doc) => {
+    allData.push({ ...doc.data(), id: doc.id });
+  });
+  return allData;
 };

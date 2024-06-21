@@ -15,7 +15,7 @@ import {
 import { ProgressBar } from "primereact/progressbar";
 import { Tooltip } from "primereact/tooltip";
 import { Tag } from "primereact/tag";
-import { uploadFile, uploadInfo, getDocs } from "../../firebase/config";
+import { uploadFile, uploadInfo, getData } from "../../firebase/config";
 
 interface SentimentChangeEvent {
   target: HTMLInputElement & { checked: boolean; value: string };
@@ -207,28 +207,17 @@ const UploadImage: React.FC = () => {
       "custom-cancel-btn p-button-danger p-button-rounded p-button-outlined",
   };
 
-  const seeStates = () => {
-    console.log({
-      author,
-      sentiments,
-      description,
-    });
-    console.log(file);
+  const seeStates = async () => {
     /*Subir imagen a bucket de firebase */
     let result = null;
     try {
-      result = uploadFile(file);
+      result = await uploadFile(file);
+      uploadInfo({ author, sentiments, description, result });
+      showMessage("¡Información guardada!", "success");
     } catch (e) {
       console.log(e);
       showMessage("¡Error al subir la imagen!", "warn");
     }
-
-    if (result) {
-      showMessage("¡Información guardada!", "success");
-    }
-
-    //uploadInfo();
-    getDocs();
 
     /* Limpiar todos los estados en logica y en interfaz */
     setAuthor("");

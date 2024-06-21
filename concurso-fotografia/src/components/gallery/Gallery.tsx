@@ -1,46 +1,49 @@
-import React, { useState, useEffect } from "react";
-import { Galleria } from "primereact/galleria";
-import { storage } from "../../firebase/config";
-import { Button } from "primereact/button";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { Card } from "primereact/card";
+import { getData } from "../../firebase/config";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { useEffect, useState } from "react";
+import { Image } from "primereact/image";
 
 const Galeria: React.FC = () => {
-  const [images, setImages] = useState(null);
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    getData().then((result) => {
+      setData(result);
+    });
+  }, []);
 
-  const getImages = () => {
-    let imagesUrls = [];
-    const listRef = ref(storage, "");
-    // Find all the prefixes and items.
-    listAll(listRef)
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          getDownloadURL(itemRef)
-            .then((url) => {
-              console.log(url);
-              imagesUrls.push(url);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        });
-      })
-      .catch((error) => {
-        // Uh-oh, an error occurred!
-        console.log(error);
-      });
-    setImages(imagesUrls);
+  const header = (source) => {
+    return <Image alt="Card" src={source} preview />;
   };
 
-  const see = () => {
-    console.log(images);
-  };
-
-  return (
-    <div className="card">
-      <Button onClick={getImages}>Imagenes</Button>
-      <Button onClick={see}>Ver imagenes</Button>
-    </div>
-  );
+  if (data == null) {
+    return (
+      <div className="card flex justify-content-center align-content-center">
+        <ProgressSpinner
+          style={{ width: "100px", height: "100px" }}
+          strokeWidth="8"
+          fill="var(--surface-ground)"
+          animationDuration=".5s"
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div className="card flex justify-content-center">
+        {data.map((item) => (
+          <Card
+            key={item.id}
+            title={"Autor: " + item.author}
+            subTitle={item.sentiments}
+            header={header(item.result)}
+            className="md:w-25rem shadow-8"
+          >
+            <p className="m-0">{item.description}</p>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 };
 
 export default Galeria;
