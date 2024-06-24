@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Menubar } from "primereact/menubar";
 import { useNavigate } from "react-router-dom";
 
@@ -26,6 +25,13 @@ const NavBar: React.FC = () => {
       command: () => {
         navigate("/contacto");
       },
+    },
+    {
+      label: "Carrusel",
+      icon: "pi pi-fw pi-image",
+      command: () => {
+        navigate("/carrusel")
+      }
     },
   ];
 
