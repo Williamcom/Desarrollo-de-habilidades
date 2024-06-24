@@ -1,0 +1,16 @@
+/* styles.css */
+.image-container {
+    width: 400px; /* Ancho fijo */
+    height: 300px; /* Alto fijo */
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajustar la imagen para cubrir el contenedor */
+}
+
+.card-container {
+    width: 200px; /* Ancho fijo que coincide con el de la imagen */
+}

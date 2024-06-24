@@ -3,6 +3,8 @@ import { getData } from "../../firebase/config";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useEffect, useState } from "react";
 import { Image } from "primereact/image";
+import "./Gallery.css";
+import { Chip } from "primereact/chip";
 
 const Galeria: React.FC = () => {
   const [data, setData] = useState(null);
@@ -12,8 +14,27 @@ const Galeria: React.FC = () => {
     });
   }, []);
 
-  const header = (source) => {
-    return <Image alt="Card" src={source} preview />;
+  const header = (source: string) => {
+    return (
+      <div className="image-container">
+        <Image alt="Card" src={source} preview />
+      </div>
+    );
+  };
+
+  const chipMapper = (sentiments: Array<string>) => {
+    const chips: JSX.Element[] = [];
+    sentiments.forEach((sentiment, index) => {
+      chips.push(
+        <Chip
+          key={index}
+          label={sentiment}
+          className="p-mr-2 p-mb-2 m-1"
+          icon=""
+        />
+      );
+    });
+    return chips;
   };
 
   if (data == null) {
@@ -29,14 +50,14 @@ const Galeria: React.FC = () => {
     );
   } else {
     return (
-      <div className="card flex justify-content-center">
+      <div className="card flex flex-wrap justify-content-center gap-5">
         {data.map((item) => (
           <Card
             key={item.id}
             title={"Autor: " + item.author}
-            subTitle={item.sentiments}
+            subTitle={chipMapper(item.sentiments)}
             header={header(item.result)}
-            className="md:w-25rem shadow-8"
+            className="md:w-25rem shadow-8 card-container"
           >
             <p className="m-0">{item.description}</p>
           </Card>

@@ -1,7 +1,1 @@
-<div class Name='flex align-items-center justify-content-center'>Author: {images[activeIndex].author}</div>
-                <Galleria ref={galleria} value={images} activeIndex={activeIndex} onItemChange={onItemChange}
-                    showThumbnails={showThumbnails} showItemNavigators showItemNavigatorsOnHover
-                    numVisible={5} circular autoPlay transitionInterval={3000} responsiveOptions={responsiveOptions}
-                    item={itemTemplate} thumbnail={thumbnailTemplate} footer={footer}
-                    style={{ maxWidth: '400px' , mixWidth:'400px'}} className={galleriaClassName} />
-                <div className='flex align-items-center justify-content-center'>Descripción: {images[activeIndex].description}</div>              
+<p className="m-0">{item.description}</p>

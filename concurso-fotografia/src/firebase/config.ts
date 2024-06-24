@@ -6,8 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getFirestore, addDoc, collection, getDocs } from "firebase/firestore";
 // La configuracion de firebase
 
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // Initialize Firebase
 

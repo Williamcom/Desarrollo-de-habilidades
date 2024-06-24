@@ -4,7 +4,6 @@ import { Galleria } from 'primereact/galleria';
 import { classNames } from 'primereact/utils';
 import './Carousel.css';
 import { getData } from "../../firebase/config";
-import { ProgressSpinner } from 'primereact/progressspinner'
 
 export default function Carousel() {
     const [images, setImages] = useState(null);
@@ -110,6 +109,7 @@ export default function Carousel() {
     const thumbnailTemplate = (item) => {
         return (
             <div className="grid grid-nogutter justify-content-center">
+                
                 <img src={item.result} alt={item.description} style={{ display: 'block' }} />
             </div>
         );
@@ -135,26 +135,16 @@ export default function Carousel() {
         });
 
         return (
-            <div className="custom-galleria-footer">
-                {/* <Button icon="pi pi-list" onClick={() => setShowThumbnails(prevState => !prevState)} />
-                <Button icon={autoPlayClassName} onClick={() => {
-                    if (!isAutoPlayActive) {
-                        galleria.current.startSlideShow();
-                        setAutoPlayActive(true)
-                    }
-                    else {
-                        galleria.current.stopSlideShow();
-                        setAutoPlayActive(false)
-                    }
-                }} />*/}
-                {
-                    images && (
+            <div className="custom-galleria-footer mt-3">
+                <div className='flex justify-content-between w-full'>
+                    {images && (
                         <span className="title-container">
                             <span>{activeIndex + 1}/{images.length}</span>
                         </span>
-                    )
-                }
-                <Button icon={fullScreenClassName} onClick={() => toggleFullScreen()} className="fullscreen-button align-items-right" />
+                    )}
+                    <Button icon={fullScreenClassName} onClick={() => toggleFullScreen()} className="fullscreen-button align-items-right" />
+                </div>
+               
             </div>
         );
     }
@@ -165,11 +155,17 @@ export default function Carousel() {
     });
         return (
             <div className="card galleria-demo flex flex-column align-items-center justify-content-center">
+                {images && (
+                    <div className='text-xl font-italic font-bold'>Autor: {images[activeIndex].author}</div>
+                )}
                 <Galleria ref={galleria} value={images} activeIndex={activeIndex} onItemChange={onItemChange}
                     showThumbnails={showThumbnails} showItemNavigators showItemNavigatorsOnHover
                     numVisible={5} circular autoPlay transitionInterval={3000} responsiveOptions={responsiveOptions}
                     item={itemTemplate} thumbnail={thumbnailTemplate} footer={footer}
-                    style={{ maxWidth: '400px' , mixWidth:'400px'}} className={galleriaClassName} />
+                    style={{ width: '700px' }} className={galleriaClassName} />
+                {images && (
+                    <div >Descripción: {images[activeIndex].description}</div>
+                )}
             </div>
         )
       
